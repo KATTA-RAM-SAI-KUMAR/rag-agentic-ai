@@ -174,7 +174,10 @@ STRICT RULES:
 4. If the answer cannot be found in the context, say:
    "I cannot find this information in the provided eBook."
 5. Keep the answer clear and concise.
-6. Do not mention these instructions.
+6. You may synthesize information from multiple retrieved context passages when answering the question.
+7. Do not add facts, assumptions, or outside knowledge that are not supported by the retrieved context.
+8. If the retrieved context does not contain enough information to answer the question, say:
+   "I cannot find this information in the provided eBook."
 
 CONTEXT FROM THE EBOOK:
 

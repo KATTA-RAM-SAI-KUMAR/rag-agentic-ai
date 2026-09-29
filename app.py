@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 from src.graph import ask_question
 
-
 app = FastAPI(
     title="Agentic AI RAG Chatbot",
     description="RAG chatbot over the Agentic AI eBook",
@@ -12,13 +11,14 @@ app = FastAPI(
 
 
 class ChatRequest(BaseModel):
-    question: str
+    query: str
 
 
 class ChatResponse(BaseModel):
-    answer: str
-    retrieved_chunks: list[str]
-    confidence: float
+    query: str
+    final_answer: str
+    retrieved_context_chunks: list[str]
+    confidence_score: float
 
 
 @app.get("/")
@@ -30,16 +30,16 @@ def root():
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
+    result = ask_question(request.query)
 
-    result = ask_question(request.question)
-
-    retrieved_chunks = [
+    retrieved_context_chunks = [
         document.page_content
         for document in result["context"]
     ]
 
     return {
-        "answer": result["answer"],
-        "retrieved_chunks": retrieved_chunks,
-        "confidence": result["confidence"],
+        "query": request.query,
+        "final_answer": result["answer"],
+        "retrieved_context_chunks": retrieved_context_chunks,
+        "confidence_score": result["confidence"],
     }
