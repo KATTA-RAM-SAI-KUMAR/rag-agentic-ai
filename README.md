@@ -6,32 +6,32 @@ The system retrieves relevant content from the eBook using **Pinecone**, orchest
 
 The chatbot answers **strictly from the provided eBook** and rejects questions that fall outside the knowledge base.
 
----
+\---
 
 ## 📑 Table of Contents
 
-- [Project Objective](#-project-objective)
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Technologies Used](#-technologies-used)
-- [Project Structure](#-project-structure)
-- [System Requirements](#-system-requirements)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Data Ingestion](#-data-ingestion)
-- [LangGraph RAG Workflow](#-langgraph-rag-workflow)
-- [Grounding Protection](#-grounding-protection)
-- [Running the Application](#-running-the-application)
-- [API Reference](#-api-reference)
-- [Streamlit Application](#-streamlit-application)
-- [Testing](#-testing)
-- [Security](#-security)
-- [Project Configuration Summary](#-project-configuration-summary)
-- [Why Local Ollama?](#-why-local-ollama)
-- [Quick Start](#-quick-start)
-- [Future Improvements](#-future-improvements)
+* [Project Objective](#-project-objective)
+* [Features](#-features)
+* [Architecture](#-architecture)
+* [Technologies Used](#-technologies-used)
+* [Project Structure](#-project-structure)
+* [System Requirements](#-system-requirements)
+* [Installation](#-installation)
+* [Configuration](#-configuration)
+* [Data Ingestion](#-data-ingestion)
+* [LangGraph RAG Workflow](#-langgraph-rag-workflow)
+* [Grounding Protection](#-grounding-protection)
+* [Running the Application](#-running-the-application)
+* [API Reference](#-api-reference)
+* [Streamlit Application](#-streamlit-application)
+* [Testing](#-testing)
+* [Security](#-security)
+* [Project Configuration Summary](#-project-configuration-summary)
+* [Why Local Ollama?](#-why-local-ollama)
+* [Quick Start](#-quick-start)
+* [Future Improvements](#-future-improvements)
 
----
+\---
 
 ## 📌 Project Objective
 
@@ -49,24 +49,24 @@ Build a RAG-based chatbot that:
 10. Provides a REST API using FastAPI.
 11. Provides an interactive UI using Streamlit.
 
----
+\---
 
 ## ✨ Features
 
-- 📚 PDF-based knowledge base
-- 🔎 Semantic search
-- 🧠 Local embeddings
-- 🗄️ Pinecone vector database
-- 🔄 LangGraph workflow
-- 🤖 Local LLM using Ollama
-- 🛡️ Strict grounding
-- 📊 Confidence score
-- 🚫 Out-of-context question protection
-- ⚡ FastAPI REST API
-- 💻 Streamlit web interface
-- 🧪 Automated unit tests
+* 📚 PDF-based knowledge base
+* 🔎 Semantic search
+* 🧠 Local embeddings
+* 🗄️ Pinecone vector database
+* 🔄 LangGraph workflow
+* 🤖 Local LLM using Ollama
+* 🛡️ Strict grounding
+* 📊 Confidence score
+* 🚫 Out-of-context question protection
+* ⚡ FastAPI REST API
+* 💻 Streamlit web interface
+* 🧪 Automated unit tests
 
----
+\---
 
 ## 🏗️ Architecture
 
@@ -129,26 +129,26 @@ Build a RAG-based chatbot that:
                     └─────────────────────┘
 ```
 
----
+\---
 
 ## 🛠️ Technologies Used
 
-| Technology      | Purpose                          |
-| --------------- | -------------------------------- |
-| Python          | Core programming language        |
-| LangChain       | RAG components                   |
-| LangGraph       | RAG workflow orchestration       |
-| Pinecone        | Vector database                  |
-| Ollama          | Local AI model runtime           |
-| all-MiniLM      | Embedding model                  |
-| Llama 3.2 3B    | Local language model             |
-| PyPDF           | PDF processing                   |
-| FastAPI         | REST API                         |
-| Streamlit       | Web interface                    |
-| Pytest          | Testing                          |
-| python-dotenv   | Environment configuration        |
+|Technology|Purpose|
+|-|-|
+|Python|Core programming language|
+|LangChain|RAG components|
+|LangGraph|RAG workflow orchestration|
+|Pinecone|Vector database|
+|Ollama|Local AI model runtime|
+|all-MiniLM|Embedding model|
+|Llama 3.2 3B|Local language model|
+|PyPDF|PDF processing|
+|FastAPI|REST API|
+|Streamlit|Web interface|
+|Pytest|Testing|
+|python-dotenv|Environment configuration|
 
----
+\---
 
 ## 📁 Project Structure
 
@@ -159,13 +159,13 @@ rag-agentic-ai/
 │   └── Ebook-Agentic-AI.pdf
 │
 ├── src/
-│   ├── __init__.py
+│   ├── \_\_init\_\_.py
 │   ├── config.py
 │   ├── ingestion.py
 │   └── graph.py
 │
 ├── tests/
-│   └── test_rag.py
+│   └── test\_rag.py
 │
 ├── venv/
 │
@@ -175,55 +175,55 @@ rag-agentic-ai/
 ├── README.md
 ├── requirements.txt
 ├── app.py
-└── streamlit_app.py
+└── streamlit\_app.py
 ```
 
-| File                         | Description                              |
-| ---------------------------- | ---------------------------------------- |
-| `data/Ebook-Agentic-AI.pdf`  | Source Agentic AI eBook                  |
-| `src/config.py`              | Project configuration                    |
-| `src/ingestion.py`           | PDF processing and Pinecone ingestion    |
-| `src/graph.py`               | LangGraph RAG workflow                   |
-| `tests/test_rag.py`          | RAG unit tests                           |
-| `app.py`                     | FastAPI application                      |
-| `streamlit_app.py`           | Streamlit frontend                       |
-| `.env`                       | API keys and local configuration         |
-| `.env.example`               | Example environment configuration        |
-| `requirements.txt`           | Python dependencies                      |
-| `.gitignore`                 | Files excluded from Git                  |
-| `README.md`                  | Project documentation                    |
+|File|Description|
+|-|-|
+|`data/Ebook-Agentic-AI.pdf`|Source Agentic AI eBook|
+|`src/config.py`|Project configuration|
+|`src/ingestion.py`|PDF processing and Pinecone ingestion|
+|`src/graph.py`|LangGraph RAG workflow|
+|`tests/test\_rag.py`|RAG unit tests|
+|`app.py`|FastAPI application|
+|`streamlit\_app.py`|Streamlit frontend|
+|`.env`|API keys and local configuration|
+|`.env.example`|Example environment configuration|
+|`requirements.txt`|Python dependencies|
+|`.gitignore`|Files excluded from Git|
+|`README.md`|Project documentation|
 
----
+\---
 
 ## ⚙️ System Requirements
 
-- Python 3.10+
-- [Ollama](https://ollama.com)
-- Pinecone account and API key
-- Git
-- Internet connection (for Pinecone)
-- Windows / Linux / macOS
+* Python 3.10+
+* [Ollama](https://ollama.com)
+* Pinecone account and API key
+* Git
+* Internet connection (for Pinecone)
+* Windows / Linux / macOS
 
-> The LLM and embedding model run **locally** using Ollama.
+> The LLM and embedding model run \*\*locally\*\* using Ollama.
 
----
+\---
 
 ## 🚀 Installation
 
-### 1. Clone the repository
+### 1\. Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <YOUR\_GITHUB\_REPOSITORY\_URL>
 cd rag-agentic-ai
 ```
 
-### 2. Create a virtual environment
+### 2\. Create a virtual environment
 
 **Windows**
 
 ```powershell
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+.\\venv\\Scripts\\Activate.ps1
 ```
 
 **Linux / macOS**
@@ -233,13 +233,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3\. Install dependencies
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 4. Install Ollama
+### 4\. Install Ollama
 
 Install Ollama from the [official website](https://ollama.com), then verify:
 
@@ -247,7 +247,7 @@ Install Ollama from the [official website](https://ollama.com), then verify:
 ollama --version
 ```
 
-### 5. Download the required models
+### 5\. Download the required models
 
 ```bash
 # Embedding model
@@ -270,7 +270,7 @@ all-minilm
 llama3.2:3b
 ```
 
----
+\---
 
 ## 🔑 Configuration
 
@@ -279,8 +279,8 @@ llama3.2:3b
 Create a Pinecone API key, then create a `.env` file in the project root (use `.env.example` as a template):
 
 ```env
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_INDEX_NAME=agentic-ai-local
+PINECONE\_API\_KEY=your\_pinecone\_api\_key
+PINECONE\_INDEX\_NAME=agentic-ai-local
 ```
 
 > ⚠️ Never commit `.env` to GitHub. It is excluded via `.gitignore`.
@@ -289,17 +289,17 @@ PINECONE_INDEX_NAME=agentic-ai-local
 
 The local embedding model produces **384-dimensional** vectors, so the Pinecone index is configured as:
 
-| Setting     | Value              |
-| ----------- | ------------------ |
-| Index Name  | `agentic-ai-local` |
-| Dimension   | 384                |
-| Metric      | cosine             |
-| Cloud       | AWS                |
-| Region      | us-east-1          |
+|Setting|Value|
+|-|-|
+|Index Name|`agentic-ai-local`|
+|Dimension|384|
+|Metric|cosine|
+|Cloud|AWS|
+|Region|us-east-1|
 
 The original OpenAI-based 1536-dimensional index is **not** modified.
 
----
+\---
 
 ## 📚 Data Ingestion
 
@@ -352,7 +352,7 @@ Total chunks indexed: 119
 Pinecone index: agentic-ai-local
 ```
 
----
+\---
 
 ## 🔄 LangGraph RAG Workflow
 
@@ -372,10 +372,10 @@ START → Retrieve → Generate → END
 
 If the retrieved information is sufficiently relevant, the generation node sends the retrieved context to Llama 3.2. The model is instructed to:
 
-- Use only the retrieved context.
-- Not use outside knowledge.
-- Not invent information.
-- Return a fixed response when the answer is not available.
+* Use only the retrieved context.
+* Not use outside knowledge.
+* Not invent information.
+* Return a fixed response when the answer is not available.
 
 For unsupported questions, the chatbot returns:
 
@@ -383,14 +383,14 @@ For unsupported questions, the chatbot returns:
 I cannot find this information in the provided eBook.
 ```
 
----
+\---
 
 ## 🛡️ Grounding Protection
 
 Preventing hallucinated answers is a core requirement. The chatbot uses a confidence threshold:
 
 ```python
-CONFIDENCE_THRESHOLD = 0.60
+CONFIDENCE\_THRESHOLD = 0.60
 ```
 
 If the retrieval confidence is below the threshold, the retrieved documents are **not** passed to the generation stage:
@@ -415,29 +415,29 @@ This adds a second grounding layer for questions outside the eBook.
 
 **Answerable:**
 
-- What is Agentic AI?
-- What are the key components of an agentic AI system?
-- How are agents different from traditional automation?
-- What role does memory play in an AI agent?
+* What is Agentic AI?
+* What are the key components of an agentic AI system?
+* How are agents different from traditional automation?
+* What role does memory play in an AI agent?
 
 **Rejected:**
 
-- *Who won the FIFA World Cup?* → `I cannot find this information in the provided eBook.`
+* *Who won the FIFA World Cup?* → `I cannot find this information in the provided eBook.`
 
 ### Example RAG result
 
 For the question **"What is Agentic AI?"**, the system retrieved 4 chunks:
 
-| Chunk   | Similarity Score |
-| ------- | ---------------- |
-| Chunk 1 | 0.8170           |
-| Chunk 2 | 0.7813           |
-| Chunk 3 | 0.7516           |
-| Chunk 4 | 0.7377           |
+|Chunk|Similarity Score|
+|-|-|
+|Chunk 1|0.8170|
+|Chunk 2|0.7813|
+|Chunk 3|0.7516|
+|Chunk 4|0.7377|
 
 Confidence: **0.8170** — the answer is generated from the retrieved eBook context.
 
----
+\---
 
 ## ▶️ Running the Application
 
@@ -489,23 +489,23 @@ Make sure `all-minilm` and `llama3.2:3b` are listed.
 ### Terminal 2 — Start FastAPI
 
 ```powershell
-.\venv\Scripts\Activate.ps1
+.\\venv\\Scripts\\Activate.ps1
 uvicorn app:app --reload
 ```
 
-- API: <http://127.0.0.1:8000>
-- Swagger docs: <http://127.0.0.1:8000/docs>
+* API: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+* Swagger docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ### Terminal 3 — Start Streamlit
 
 ```powershell
-.\venv\Scripts\Activate.ps1
-streamlit run streamlit_app.py
+.\\venv\\Scripts\\Activate.ps1
+streamlit run streamlit\_app.py
 ```
 
-- UI: <http://localhost:8501>
+* UI: [http://localhost:8501](http://localhost:8501)
 
----
+\---
 
 ## 🔌 API Reference
 
@@ -538,41 +538,41 @@ Ask a question about the eBook.
 ```json
 {
   "answer": "Agentic AI refers to a type of artificial intelligence that enables autonomous decision-making and action.",
-  "retrieved_chunks": [
+  "retrieved\_chunks": \[
     "Relevant eBook content..."
   ],
   "confidence": 0.817
 }
 ```
 
-| Field              | Description                                  |
-| ------------------ | -------------------------------------------- |
-| `answer`           | Generated answer (or the rejection message)  |
-| `retrieved_chunks` | Chunks retrieved from Pinecone               |
-| `confidence`       | Retrieval confidence score                   |
+|Field|Description|
+|-|-|
+|`answer`|Generated answer (or the rejection message)|
+|`retrieved\_chunks`|Chunks retrieved from Pinecone|
+|`confidence`|Retrieval confidence score|
 
----
+\---
 
 ## 💻 Streamlit Application
 
 Start it with:
 
 ```bash
-streamlit run streamlit_app.py
+streamlit run streamlit\_app.py
 ```
 
-Then open <http://localhost:8501>. The UI provides:
+Then open [http://localhost:8501](http://localhost:8501). The UI provides:
 
-- Example questions
-- Question input
-- Generated answer
-- Retrieval confidence
-- Number of retrieved chunks
-- Knowledge-base status
-- Confidence progress indicator
-- Retrieved eBook context
+* Example questions
+* Question input
+* Generated answer
+* Retrieval confidence
+* Number of retrieved chunks
+* Knowledge-base status
+* Confidence progress indicator
+* Retrieved eBook context
 
----
+\---
 
 ## 🧪 Testing
 
@@ -584,16 +584,16 @@ python -m pytest -v
 
 Expected result: `6 passed`
 
-| Test                                | Purpose                                     |
-| ----------------------------------- | ------------------------------------------- |
-| `test_retrieve_relevant_question`   | Checks retrieval for relevant questions     |
-| `test_retrieve_irrelevant_question` | Checks rejection of irrelevant retrieval    |
-| `test_generate_answer_with_context` | Checks answer generation with context       |
-| `test_generate_without_context`     | Checks out-of-context protection            |
-| `test_generate_low_confidence`      | Checks the confidence threshold             |
-| `test_ask_question`                 | Checks the complete graph invocation        |
+|Test|Purpose|
+|-|-|
+|`test\_retrieve\_relevant\_question`|Checks retrieval for relevant questions|
+|`test\_retrieve\_irrelevant\_question`|Checks rejection of irrelevant retrieval|
+|`test\_generate\_answer\_with\_context`|Checks answer generation with context|
+|`test\_generate\_without\_context`|Checks out-of-context protection|
+|`test\_generate\_low\_confidence`|Checks the confidence threshold|
+|`test\_ask\_question`|Checks the complete graph invocation|
 
----
+\---
 
 ## 🔐 Security
 
@@ -603,8 +603,8 @@ Sensitive credentials must never be committed to GitHub. Local secrets live in `
 .env
 venv/
 .venv/
-__pycache__/
-.pytest_cache/
+\_\_pycache\_\_/
+.pytest\_cache/
 ```
 
 Before pushing, verify that `.env` and `venv/` are **not** staged:
@@ -613,31 +613,31 @@ Before pushing, verify that `.env` and `venv/` are **not** staged:
 git status
 ```
 
----
+\---
 
 ## 📌 Project Configuration Summary
 
-| Setting              | Value                 |
-| -------------------- | --------------------- |
-| PDF Pages            | 60                    |
-| Text Chunks          | 119                   |
-| Chunk Size           | 1000                  |
-| Chunk Overlap        | 200                   |
-| Embedding Model      | all-MiniLM            |
-| Embedding Dimension  | 384                   |
-| Vector Database      | Pinecone              |
-| Pinecone Index       | `agentic-ai-local`    |
-| Similarity Metric    | Cosine                |
-| Retrieved Chunks     | Top 4                 |
-| Confidence Threshold | 0.60                  |
-| LLM                  | Llama 3.2 3B          |
-| LLM Runtime          | Ollama                |
-| Workflow             | LangGraph             |
-| API                  | FastAPI               |
-| UI                   | Streamlit             |
-| Testing              | Pytest                |
+|Setting|Value|
+|-|-|
+|PDF Pages|60|
+|Text Chunks|119|
+|Chunk Size|1000|
+|Chunk Overlap|200|
+|Embedding Model|all-MiniLM|
+|Embedding Dimension|384|
+|Vector Database|Pinecone|
+|Pinecone Index|`agentic-ai-local`|
+|Similarity Metric|Cosine|
+|Retrieved Chunks|Top 4|
+|Confidence Threshold|0.60|
+|LLM|Llama 3.2 3B|
+|LLM Runtime|Ollama|
+|Workflow|LangGraph|
+|API|FastAPI|
+|UI|Streamlit|
+|Testing|Pytest|
 
----
+\---
 
 ## 🧠 Why Local Ollama?
 
@@ -645,16 +645,16 @@ The original assignment specifies OpenAI embeddings and an OpenAI LLM. This impl
 
 Because `all-minilm` produces 384-dimensional vectors, the project uses a separate Pinecone index configured for 384 dimensions.
 
----
+\---
 
 ## 📋 Quick Start
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <YOUR\_GITHUB\_REPOSITORY\_URL>
 cd rag-agentic-ai
 
 python -m venv venv
-.\venv\Scripts\Activate.ps1        # Linux/macOS: source venv/bin/activate
+.\\venv\\Scripts\\Activate.ps1        # Linux/macOS: source venv/bin/activate
 
 python -m pip install -r requirements.txt
 
@@ -671,26 +671,26 @@ uvicorn app:app --reload
 In another terminal:
 
 ```bash
-streamlit run streamlit_app.py
+streamlit run streamlit\_app.py
 ```
 
----
+\---
 
 ## 📈 Future Improvements
 
-- Conversation history
-- Streaming LLM responses
-- Source / page citations in answers
-- Better retrieval and reranking
-- Hybrid keyword + semantic retrieval
-- Evaluation metrics for RAG quality
-- More comprehensive benchmark testing
-- Authentication for the API
-- Docker deployment
-- Cloud deployment
-- Improved observability and logging
+* Conversation history
+* Streaming LLM responses
+* Source / page citations in answers
+* Better retrieval and reranking
+* Hybrid keyword + semantic retrieval
+* Evaluation metrics for RAG quality
+* More comprehensive benchmark testing
+* Authentication for the API
+* Docker deployment
+* Cloud deployment
+* Improved observability and logging
 
----
+\---
 
 ## 🎯 Project Outcome
 
@@ -704,6 +704,7 @@ Document Ingestion → Chunking → Embeddings → Vector Database
 
 The resulting chatbot provides answers grounded in the Agentic AI eBook while rejecting questions that fall outside the available knowledge base.
 
----
+\---
 
 **Built with:** Python · LangChain · LangGraph · Pinecone · Ollama · Llama 3.2 · all-MiniLM · FastAPI · Streamlit · Pytest
+
