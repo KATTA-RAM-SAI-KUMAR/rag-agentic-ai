@@ -3,7 +3,6 @@ langgraph==1.2.12
 langchain-community==0.4.2
 langchain-pinecone==0.2.13
 langchain-text-splitters==1.1.2
-langchain-ollama==1.1.0
 pinecone==7.3.0
 pypdf==6.19.0
 fastapi==0.141.1
@@ -12,3 +11,6 @@ python-dotenv==1.2.3
 pydantic==2.13.5
 streamlit==1.64.0
 pytest==9.1.1
+langchain-groq
+groq
+fastembed

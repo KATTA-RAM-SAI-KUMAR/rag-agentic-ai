@@ -2,31 +2,50 @@ import os
 from typing import TypedDict
 
 from dotenv import load_dotenv
-from langchain_ollama import OllamaEmbeddings, ChatOllama
+from fastembed import TextEmbedding
+from langchain_groq import ChatGroq
 from langchain_pinecone import PineconeVectorStore
 from langgraph.graph import StateGraph, START, END
 
 load_dotenv()
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-INDEX_NAME = "agentic-ai-local"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Minimum similarity required to answer
+INDEX_NAME = "agentic-ai-cloud"
+
 CONFIDENCE_THRESHOLD = 0.60
 
 
-# --------------------------------------------------
-# EMBEDDINGS
-# --------------------------------------------------
+# ==============================
+# FASTEMBED
+# ==============================
 
-embeddings = OllamaEmbeddings(
-    model="all-minilm"
-)
+class FastEmbedEmbeddings:
+
+    def __init__(self):
+        self.model = TextEmbedding(
+            model_name="BAAI/bge-small-en-v1.5"
+        )
+
+    def embed_documents(self, texts):
+        return [
+            embedding.tolist()
+            for embedding in self.model.embed(texts)
+        ]
+
+    def embed_query(self, text):
+        return next(
+            self.model.embed([text])
+        ).tolist()
 
 
-# --------------------------------------------------
-# PINECONE VECTOR STORE
-# --------------------------------------------------
+embeddings = FastEmbedEmbeddings()
+
+
+# ==============================
+# PINECONE
+# ==============================
 
 vector_store = PineconeVectorStore(
     index_name=INDEX_NAME,
@@ -35,19 +54,20 @@ vector_store = PineconeVectorStore(
 )
 
 
-# --------------------------------------------------
-# LOCAL LLM
-# --------------------------------------------------
+# ==============================
+# GROQ
+# ==============================
 
-llm = ChatOllama(
-    model="llama3.2:3b",
+llm = ChatGroq(
+    api_key=GROQ_API_KEY,
+    model="openai/gpt-oss-20b",
     temperature=0,
 )
 
 
-# --------------------------------------------------
-# LANGGRAPH STATE
-# --------------------------------------------------
+# ==============================
+# GRAPH STATE
+# ==============================
 
 class AgentState(TypedDict):
     question: str
@@ -56,9 +76,9 @@ class AgentState(TypedDict):
     confidence: float
 
 
-# --------------------------------------------------
-# RETRIEVE
-# --------------------------------------------------
+# ==============================
+# RETRIEVAL
+# ==============================
 
 def retrieve(state: AgentState):
 
@@ -82,43 +102,24 @@ def retrieve(state: AgentState):
         print(f"  Chunk {i}: {score:.4f}")
 
     if scores:
-
         confidence = max(scores)
-
     else:
-
         confidence = 0.0
 
-    print(
-        f"\nBest similarity score: {confidence:.4f}"
-    )
-
-    # --------------------------------------------------
-    # STRICT GROUNDING CHECK
-    # --------------------------------------------------
+    print(f"\nBest similarity score: {confidence:.4f}")
 
     if confidence < CONFIDENCE_THRESHOLD:
 
-        print(
-            "\nConfidence below threshold."
-        )
-
-        print(
-            "Question is outside the eBook context."
-        )
+        print("\nConfidence below threshold.")
+        print("Question is outside the eBook context.")
 
         return {
             "context": [],
             "confidence": confidence,
         }
 
-    print(
-        "\nConfidence above threshold."
-    )
-
-    print(
-        "Question is sufficiently related to the eBook."
-    )
+    print("\nConfidence above threshold.")
+    print("Question is sufficiently related to the eBook.")
 
     return {
         "context": documents,
@@ -126,20 +127,17 @@ def retrieve(state: AgentState):
     }
 
 
-# --------------------------------------------------
-# GENERATE
-# --------------------------------------------------
+# ==============================
+# GENERATION
+# ==============================
 
 def generate(state: AgentState):
 
     question = state["question"]
+
     documents = state["context"]
 
     confidence = state["confidence"]
-
-    # --------------------------------------------------
-    # OUT-OF-CONTEXT RESPONSE
-    # --------------------------------------------------
 
     if not documents or confidence < CONFIDENCE_THRESHOLD:
 
@@ -150,18 +148,10 @@ def generate(state: AgentState):
             )
         }
 
-    # --------------------------------------------------
-    # BUILD CONTEXT
-    # --------------------------------------------------
-
     context_text = "\n\n".join(
         document.page_content
         for document in documents
     )
-
-    # --------------------------------------------------
-    # STRICT RAG PROMPT
-    # --------------------------------------------------
 
     prompt = f"""
 You are a question-answering assistant for an Agentic AI eBook.
@@ -172,12 +162,11 @@ STRICT RULES:
 2. Do not use outside knowledge.
 3. Do not invent information.
 4. If the answer cannot be found in the context, say:
-   "I cannot find this information in the provided eBook."
+"I cannot find this information in the provided eBook."
 5. Keep the answer clear and concise.
-6. You may synthesize information from multiple retrieved context passages when answering the question.
-7. Do not add facts, assumptions, or outside knowledge that are not supported by the retrieved context.
-8. If the retrieved context does not contain enough information to answer the question, say:
-   "I cannot find this information in the provided eBook."
+6. You may synthesize information from multiple retrieved passages.
+7. Do not add facts, assumptions, or outside knowledge.
+8. If the context is insufficient, use the exact fallback response.
 
 CONTEXT FROM THE EBOOK:
 
@@ -190,54 +179,46 @@ QUESTION:
 ANSWER:
 """
 
-    print("\nGenerating answer...")
+    print("\nGenerating answer using Groq...")
 
     response = llm.invoke(prompt)
 
-    answer = response.content
-
     return {
-        "answer": answer,
+        "answer": response.content
     }
 
 
-# --------------------------------------------------
-# BUILD LANGGRAPH
-# --------------------------------------------------
+# ==============================
+# LANGGRAPH
+# ==============================
 
 workflow = StateGraph(AgentState)
 
-workflow.add_node(
-    "retrieve",
-    retrieve
-)
+workflow.add_node("retrieve", retrieve)
 
-workflow.add_node(
-    "generate",
-    generate
-)
+workflow.add_node("generate", generate)
 
 workflow.add_edge(
     START,
-    "retrieve"
+    "retrieve",
 )
 
 workflow.add_edge(
     "retrieve",
-    "generate"
+    "generate",
 )
 
 workflow.add_edge(
     "generate",
-    END
+    END,
 )
 
 graph = workflow.compile()
 
 
-# --------------------------------------------------
-# ASK QUESTION
-# --------------------------------------------------
+# ==============================
+# PUBLIC FUNCTION
+# ==============================
 
 def ask_question(question: str):
 
@@ -253,9 +234,9 @@ def ask_question(question: str):
     return result
 
 
-# --------------------------------------------------
-# TERMINAL TEST
-# --------------------------------------------------
+# ==============================
+# CLI TEST
+# ==============================
 
 if __name__ == "__main__":
 
@@ -275,9 +256,7 @@ if __name__ == "__main__":
     print("CONFIDENCE")
     print("==============================")
 
-    print(
-        f"{result['confidence']:.4f}"
-    )
+    print(f"{result['confidence']:.4f}")
 
     print("\n==============================")
     print("RETRIEVED CHUNKS")
@@ -287,12 +266,10 @@ if __name__ == "__main__":
 
         for i, document in enumerate(
             result["context"],
-            1
+            1,
         ):
 
-            print(
-                f"\n--- Chunk {i} ---"
-            )
+            print(f"\n--- Chunk {i} ---")
 
             print(
                 document.page_content[:500]

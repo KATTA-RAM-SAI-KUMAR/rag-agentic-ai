@@ -1,25 +1,41 @@
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
+from fastembed import TextEmbedding
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_ollama import OllamaEmbeddings
 from langchain_pinecone import PineconeVectorStore
-
-from pinecone import Pinecone, ServerlessSpec
 
 load_dotenv()
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 
-# New index for Ollama's 384-dimensional embeddings
-INDEX_NAME = "agentic-ai-local"
+INDEX_NAME = "agentic-ai-cloud"
 
 PDF_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     "data",
     "Ebook-Agentic-AI.pdf",
 )
+
+
+class FastEmbedEmbeddings:
+    def __init__(self):
+        print("Loading FastEmbed model...")
+        self.model = TextEmbedding(
+            model_name="BAAI/bge-small-en-v1.5"
+        )
+
+    def embed_documents(self, texts):
+        return [
+            embedding.tolist()
+            for embedding in self.model.embed(texts)
+        ]
+
+    def embed_query(self, text):
+        return next(
+            self.model.embed([text])
+        ).tolist()
 
 
 def run_ingestion():
@@ -43,49 +59,21 @@ def run_ingestion():
 
     print(f"Created {len(chunks)} chunks.")
 
-    print("Connecting to Pinecone...")
-
-    pc = Pinecone(api_key=PINECONE_API_KEY)
-
-    existing_indexes = [index.name for index in pc.list_indexes()]
-
-    if INDEX_NAME not in existing_indexes:
-
-        print(f"Creating Pinecone index: {INDEX_NAME}")
-
-        pc.create_index(
-            name=INDEX_NAME,
-            dimension=384,
-            metric="cosine",
-            spec=ServerlessSpec(
-                cloud="aws",
-                region="us-east-1",
-            ),
-        )
-
-        print("Index created.")
-
-    else:
-
-        print(f"Using existing index: {INDEX_NAME}")
-
-    print("Loading local embedding model...")
-
-    embeddings = OllamaEmbeddings(
-        model="all-minilm"
-    )
+    embeddings = FastEmbedEmbeddings()
 
     print("Uploading chunks to Pinecone...")
+    print(f"Index: {INDEX_NAME}")
 
     PineconeVectorStore.from_documents(
         documents=chunks,
         embedding=embeddings,
         index_name=INDEX_NAME,
+        pinecone_api_key=PINECONE_API_KEY,
     )
 
     print()
     print("===================================")
-    print("INGESTION COMPLETED SUCCESSFULLY!")
+    print("CLOUD INGESTION COMPLETED!")
     print("===================================")
     print(f"Total chunks indexed: {len(chunks)}")
     print(f"Pinecone index: {INDEX_NAME}")
